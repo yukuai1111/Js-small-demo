@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Small Demos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 50px;
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        /* 卡片核心样式：纯色渐变背景 */
+        .card {
+            height: 160px;
+            border-radius: 16px;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 悬停上浮效果 */
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 给每个卡片不同的纯色渐变 */
+        .card:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .card:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .card:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .card:nth-child(5) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .card:nth-child(6) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #1e293b;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JS SMALL DEMOS</h1>
+        <div class="card-grid">
+            <a href="./calculator/index.html" class="card">
+                <div class="card-title">Calculator</div>
+                <div class="card-desc">基础计算器</div>
+            </a>
+
+            <a href="./clock/index.html" class="card">
+                <div class="card-title">Clock</div>
+                <div class="card-desc">数字时钟</div>
+            </a>
+
+            <a href="./form/index.html" class="card">
+                <div class="card-title">Form</div>
+                <div class="card-desc">表单验证</div>
+            </a>
+
+            <a href="./password-generator/index.html" class="card">
+                <div class="card-title">Password</div>
+                <div class="card-desc">密码生成器</div>
+            </a>
+
+            <a href="./todo-list/index.html" class="card">
+                <div class="card-title">Todo List</div>
+                <div class="card-desc">待办清单</div>
+            </a>
+
+            <a href="./weather/index.html" class="card">
+                <div class="card-title">Weather</div>
+                <div class="card-desc">天气查询</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
