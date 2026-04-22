@@ -1,0 +1,178 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+.clock {
+    position: relative;
+    margin: 100px auto;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0px 0px 3px 5px #ccc,
+        inset 0px 0px 3px 2px #ccc;
+    border: 2px dashed #fb1136;
+
+}
+
+/* 刻度 */
+.clock .number {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* background-color: pink; */
+    --rotateAngle: 0;
+    transform: rotate(var(--rotateAngle));
+    padding: 15px;
+    text-align: center;
+}
+
+.clock .one {
+    --rotateAngle: 30deg;
+}
+
+.clock .two {
+    --rotateAngle: 60deg
+}
+
+.clock .three {
+    --rotateAngle: 90deg
+}
+
+.clock .four {
+    --rotateAngle: 120deg
+}
+
+.clock .five {
+    --rotateAngle: 150deg
+}
+
+.clock .six {
+    --rotateAngle: 180deg
+}
+
+.clock .seven {
+    --rotateAngle: 210deg
+}
+
+.clock .eight {
+    --rotateAngle: 240deg
+}
+
+.clock .nine {
+    --rotateAngle: 270deg
+}
+
+.clock .ten {
+    --rotateAngle: 300deg
+}
+
+.clock .eleven {
+    --rotateAngle: 330deg
+}
+
+/* 数字扭转 */
+.number .number1 {
+    --undoAngle: 0;
+    transform: rotate(var(--undoAngle));
+}
+
+.one .number1 {
+    --undoAngle: -30deg;
+}
+
+.two .number1 {
+    --undoAngle: -60deg;
+}
+
+.three .number1 {
+    --undoAngle: -90deg;
+}
+
+.four .number1 {
+    --undoAngle: -120deg;
+}
+
+.five .number1 {
+    --undoAngle: -150deg;
+}
+
+.six .number1 {
+    --undoAngle: -180deg;
+}
+
+.seven .number1 {
+    --undoAngle: -210deg;
+}
+
+.eight .number1 {
+    --undoAngle: -240deg;
+}
+
+.nine .number1 {
+    --undoAngle: -270deg;
+}
+
+.ten .number1 {
+    --undoAngle: -300deg;
+}
+
+.eleven .number1 {
+    --undoAngle: -330deg;
+}
+
+/* 指针 */
+
+
+.clock .hour,
+.clock .minute,
+.clock .second {
+transform-origin: bottom;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    border-radius: 5px 5px 0px 0;
+}
+
+.clock .hour {
+    width: 8px;
+    height: 105px;
+    background-color: #fb1136;
+
+}
+
+.clock .minute {
+    width: 6px;
+    height: 140px;
+    background-color: black;
+}
+
+.clock .second {
+    width:4px;
+    height: 170px;
+    background-color: #00bfff;
+}
+.clock::after{position: absolute;
+    content: "";
+    width:20px;
+    height: 20px;
+    background-color: chocolate;
+    border-radius: 50%;
+    top:50%;
+    left:50%;
+   transform: translate(-30%,-50%);
+}

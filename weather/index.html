@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气查询</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="card">
+        <h1 class="title">Weather - Search</h1>
+        <div class="search">
+            <input type="text" name="search" placeholder="在此输入城市拼音" spellcheck="false" autocomplete="off">
+            <button><img src="./images/search.png" alt=""></button>
+        </div>
+        <div class="weather">
+            <div class="weather-icon">----</div>
+            <h1 class="temp">--°c</h1>
+            <h2 class="city">------</h2>
+            <div class="detail">
+                <div class="col">
+                    <img src="./images/humidity.png">
+                    <div>
+                        <p class="humidity">--%</p>
+                        <p>湿度</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="./images/wind.png">
+                    <div>
+                        <p class="wind">--km/h</p>
+                        <p>风速</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        //密钥
+        const apiKey = "2e6fe3b2cd001843b978173b6895194e"
+        //地址
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&lang=zh_cn"
+        //点击事件/键盘事件
+        const searchBox = document.querySelector(".search input")
+        const searchBtn = document.querySelector(".search button")
+
+
+        searchBtn.addEventListener('click', () => {
+            fn()
+        })
+        searchBox.addEventListener('keyup', (e) => {
+            //   console.log(e.key)
+            if (e.key === 'Enter') { fn() }
+
+        })
+
+        //调用的获取天气函数
+
+        function fn() {
+            alert('正在查询...')
+            //先判断非空
+            if (searchBox.value.trim() === '') {
+                alert('请输入城市名称！')
+                return
+            }
+            //利用fetch，获取数据
+            fetch(apiUrl + `&appid=${apiKey}&q=${searchBox.value.trim()}`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('请求失败！')
+                    }
+                    return res.json()
+                })
+                .then(data => {
+                    // console.log(data)
+                    document.querySelector('.city').innerHTML = data.name
+                    document.querySelector('.temp').innerHTML = Math.round(data.main.temp) + '°c'
+                    document.querySelector('.humidity').innerHTML = data.main.humidity + '%'
+                    document.querySelector('.wind').innerHTML = data.wind.speed + ' km/h'
+
+                    if (data.weather[0].main === 'Clouds')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/clouds.png" alt="">'
+
+                    else if (data.weather[0].main === 'Clear')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/clear.png" alt="">'
+
+                    else if (data.weather[0].main === 'Rain')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/rain.png" alt="">'
+
+
+                    else if (data.weather[0].main === 'Drizzle')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/drizzle.png" alt="">'
+
+                    else if (data.weather[0].main === 'Mist')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/mist.png" alt="">'
+
+                    else if (data.weather[0].main === 'Snow')
+                        document.querySelector('.weather-icon').innerHTML = '<img src="./images/snow.png" alt="">'
+                    else {
+                        document.querySelector('.weather-icon').innerHTML = '未查询到此图片！'
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err)
+                    alert('查询失败！请检查输入是否正确！')
+                })
+
+
+        }
+
+
+        searchBox.addEventListener('blur', () => {
+            if (searchBox.value.trim() === '') {
+                document.querySelector('.city').innerHTML = '------'
+                document.querySelector('.temp').innerHTML = '--°c'
+                document.querySelector('.humidity').innerHTML = '--%'
+                document.querySelector('.wind').innerHTML = '--km/h'
+                document.querySelector('.weather-icon').innerHTML = '----'
+            }
+        })
+
+    </script>
+</body>
+
+</html>

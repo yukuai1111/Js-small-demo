@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header>
+        <h1>待办清单 📃</h1>
+    </header>
+
+    <form action="">
+        <input type="text" placeholder="请输入您的待办事务" class="todo-get">
+        <button class="get-btn">➕</button>
+    </form>
+    <div class="todo-lists">
+        <ul>
+            <!-- <li class="list fade-away">
+                <div class="item">12323333</div>
+                <div class="btn">
+                    <button class="completed">✔️</button>
+                    <button class="delete">❌</button>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+    <script>
+        const input = document.querySelector('.todo-get')
+        const getbtn = document.querySelector('.get-btn')
+
+        const ul = document.querySelector('.todo-lists ul')
+        //添加事件
+        //点击添加清单
+        getbtn.addEventListener('click', addList)
+        //点击删除清单，利用事件委托
+        ul.addEventListener('click', deleteList)
+
+        //添加模块
+        function addList(e) {
+            //阻止表单默认行为
+            e.preventDefault()
+            // console.log(1)
+            if (input.value !== '' && input.value.trim() !== '') {
+                // console.log(input.value)
+                //新增list
+                const list = document.createElement('li')
+                //添加样式
+                list.classList.add('list')
+                //新增item
+                const item = document.createElement('div')
+                //将item的文本改变，并追加给list
+                item.innerHTML = input.value
+                list.append(item)
+                input.value = ''
+
+                //新增按钮
+                const div = document.createElement('div')
+                div.classList.add('btn')
+                //添加按钮
+                const completed = document.createElement('button')
+                completed.classList.add('completed')
+                completed.innerHTML = '✔️'
+                //追加给div
+                div.append(completed)
+
+                //删除按钮
+                const del = document.createElement('button')
+                del.classList.add('delete')
+                del.innerHTML = '❌'
+                //追加给div
+                div.append(del)
+
+
+                //div追加给list
+                list.append(div)
+                //将list追加给ul，显示到页面
+                ul.append(list)
+
+            } else { alert('输入内容不为空！') }
+
+        }
+        //完成/删除模块
+        function deleteList(e) {
+            //完成
+            // console.log(e.target.classList[0])
+            if (e.target.classList[0] === 'completed') {
+                // console.log(e.target.parentElement.previousElementSibling)
+                e.target.parentElement.previousElementSibling.classList.add('active')
+            }
+            if (e.target.classList[0] === 'delete') {
+                // console.log(e.target.closest('li'))
+                e.target.closest('li').classList.add('fade-away')
+                e.target.closest('li').addEventListener('transitionend', () => {
+                    // console.log(1)
+                     e.target.closest('li').remove()
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>

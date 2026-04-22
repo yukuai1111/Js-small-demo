@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Password Generator</h1>
+        <p class="password">Your password</p>
+        <button class="btn">GENERATE!</button>
+        <p class="form-title">Preferences</p>
+        <form action="/" id="form">
+            <!-- 长度 -->
+            <label for="psd-length">Length</label>
+            <input type="number" name="number" id="psd-length" min="1" max="10" value="4">
+
+            <!-- 小写 -->
+            <label for="lower">Lower Case Alphabets</label>
+            <input type="checkbox" name="lower" id="lower" checked>
+
+            <!-- 大写 -->
+            <label for="upper">Upper Case Alphabets</label>
+            <input type="checkbox" name="upper" id="upper">
+
+            <!-- 数字 -->
+            <label for="number">Numbers</label>
+            <input type="checkbox" name="number" id="number">
+            <!-- 特殊字符 -->
+            <label for="symbol">Symbols</label>
+            <input type="checkbox" name="symbol" id="symbol">
+        </form>
+    </div>
+    <script>
+        //获取元素
+        //字符池：利用函数，将大小写字母、数字、符号的编码数字转成数组，用于生成密码时的拼接和抽取
+        //点击事件：获取长度、各种勾选框的状态，将其作为实参传到生成密码的函数里
+        //在生成密码的函数里先定义空数组，空数组用于和字符池的数组拼接和抽取
+        //进行勾选框状态的判断，然后当前数组拼接。例如，如果勾选了小写字母，就把小写字母对应的字符池的数组拼接到当前数组里
+        //把全部判断完的数组，做循环，循环的次数（抽取的数字个数）就是密码的长度
+        //抽取完的数字放入到新数组（空数组），并转成编码所对应的字母、数字、符号
+        //最后再将数组里的以空拼接，然后给渲染到密码框里
+
+
+
+        //元素
+        const psdEle = document.querySelector('.password')
+        const btn = document.querySelector('.btn')
+        const lengthEle = document.querySelector('#psd-length')
+        const lowerEle = document.querySelector('#lower')
+        const upperEle = document.querySelector('#upper')
+        const numberEle = document.querySelector('#number')
+        const symbolEle = document.querySelector('#symbol')
+
+        //字符池
+        function arrayLowToHigh(min, max) {
+            //定义空数组
+            let arrayCode = []
+            // 循环把数字投入数组
+            for (let i = min; i <= max; i++) {
+                // console.log(i)
+                arrayCode.push(i)
+            }
+            // console.log(arrayCode)
+            return arrayCode
+        }
+        const LOWERCASE_CHAR_CODES = arrayLowToHigh(97, 122);
+        const UPPERCASE_CHAR_CODES = arrayLowToHigh(65, 90);
+        const NUMBER_CHAR_CODES = arrayLowToHigh(48, 57);
+        const SYMBOL_CHAR_CODES = arrayLowToHigh(33, 47).concat(arrayLowToHigh(58, 64)).concat(arrayLowToHigh(91, 96)).concat(arrayLowToHigh(123, 126));
+
+
+        //点击事件绑定生成密码函数
+        btn.addEventListener('click', () => {
+            // 长度
+            const psdlength = lengthEle.value
+            // console.log(psdlength)
+            //大小字母、数字、符号
+            const lower = lowerEle.checked
+            const upper = upperEle.checked
+            const number = numberEle.checked
+            const symbol = symbolEle.checked
+
+            //定义密码：利用函数
+            const password = getPassword(psdlength, lower, upper, number, symbol)
+            //密码渲染到页面
+            psdEle.innerHTML = password
+        })
+        function getPassword(len, low, up, num, symbol) {
+            // console.log(1)
+            let arrayPsd = []
+            //判断勾选框状态
+            if (low) {
+                arrayPsd = LOWERCASE_CHAR_CODES
+                // console.log(arrayPsd)
+            }
+            if (up) {
+                arrayPsd = arrayPsd.concat(UPPERCASE_CHAR_CODES)
+                // console.log(arrayPsd)
+            }
+            if (num) {
+                arrayPsd = arrayPsd.concat(NUMBER_CHAR_CODES)
+                // console.log(arrayPsd)
+            }
+            if (symbol) {
+                arrayPsd = arrayPsd.concat(SYMBOL_CHAR_CODES)
+                // console.log(arrayPsd)
+            }
+
+            //定义最后的密码数组
+            let finalPsd = []
+            for (let i = 0; i < len; i++) {
+                //抽取数组的数字
+                const random = arrayPsd[Math.floor(Math.random() * arrayPsd.length)]
+                // console.log(random)
+                //抽取的数字追加给最后的密码数组
+                //数字转成对应的字母、数字、字符
+                finalPsd.push(String.fromCharCode(random))
+                // console.log(finalPsd)
+
+            } 
+
+            //判断没勾选的时候
+            if(!low&&!up&&!num&&!symbol)
+                return `Select at least one option`
+            
+            //数组展开拼接
+            return finalPsd.join('')
+
+           
+        }
+    </script>
+</body>
+
+</html>

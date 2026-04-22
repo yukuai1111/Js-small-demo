@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #22252d;
+    --btn-bg: #272b33;
+    --btn-green: #26f7d1;
+    --btn-red: #ff1214;
+    --controls-bg: #292d36;
+}
+
+html,
+body {
+    /* font-size: 10px; */
+    font-family: 'lato', Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e3e3e3;
+}
+
+.container {
+    width: 300px;
+    height: 500px;
+    background-color: var(--bg);
+    border-radius: 20px;
+}
+
+.screen {
+    width: 90%;
+    margin-left: 15px;
+    margin-top: 2px;
+    height: 200px;
+    color: white;
+    /* background-color: pink; */
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    gap: 20px;
+
+
+}
+
+.current {
+    font-size: 30px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.result {
+    font-size: 40px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.key {
+    width: 95%;
+    height: 295px;
+    background-color: var(--controls-bg);
+    margin: auto;
+    border-radius: 20px;
+}
+
+.key .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px;
+}
+
+button {
+    font-size: 23px;
+    width: 50px;
+    height: 45px;
+    background-color: var(--btn-bg);
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: #20232b;
+}
+
+.key .row .clear {
+    /* color: var(--btn-green); */
+    flex: 0.8;
+
+}
+
+.green {
+    color: var(--btn-green);
+}
+
+.red {
+    color: var(--btn-red);
+}

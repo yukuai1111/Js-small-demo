@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="screen">
+            <div class="current"></div>
+            <div class="result"></div>
+        </div>
+        <div class="key">
+            <div class="row">
+                <button class="green clear" data-key="clear">AC</button>
+                <button class="green" data-key="baifenbi">%</button>
+                <button class="red" data-key="chu">÷</button>
+            </div>
+            <div class="row">
+                <button class="number">7</button>
+                <button class="number">8</button>
+                <button class="number">9</button>
+                <button class="red" data-key="cheng">×</button>
+            </div>
+            <div class="row">
+                <button class="number">4</button>
+                <button class="number">5</button>
+                <button class="number">6</button>
+                <button class="red" data-key="jian">-</button>
+            </div>
+            <div class="row">
+                <button class="number">1</button>
+                <button class="number">2</button>
+                <button class="number">3</button>
+                <button class="red" data-key="jia">+</button>
+            </div>
+            <div class="row">
+                <button data-key="back">←</button>
+                <button class="number">0</button>
+                <button class="number">.</button>
+                <button class="red" data-key="deng">=</button>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        //类构造函数
+        class Cal {
+            //初始化计算器
+            constructor(current, result) {
+                this.current = current
+                this.result = result
+                this.clear()
+            }
+            //清空一整个计算器
+            clear() {
+                this.currentNumber = ''
+                this.perviousNumber = ''
+                this.operation = undefined
+            }
+            //删除数字
+            del() {
+                this.currentNumber = this.currentNumber.toString().slice(0, -1)
+            }
+            //增加数字
+            add(number) {
+                if (number === '.' && this.currentNumber.includes('.')) {
+                    return
+                }
+                this.currentNumber = this.currentNumber.toString() + number.toString()
+            }
+            // 输入符号
+            addKey(operation) {
+                if (this.operation === '') {
+                    console.log(1)
+                    return
+                }
+                //上一个操作数不为空，就是还没计算完，则先计算
+                if (this.perviousNumber !== '') {
+                    this.compute()
+                }
+                this.operation = operation
+
+                this.perviousNumber = this.currentNumber
+                this.currentNumber = ''
+            }
+            // 计算
+            compute() {
+                // console.log(1) 
+                //定义一个结果
+                let computation
+                //利用浮点数，更符合计算器
+                let cur = parseFloat(this.currentNumber)
+                let pre = parseFloat(this.perviousNumber)
+                let cur1 = 100
+                //非数字直接中断
+                if (isNaN(cur) || isNaN(pre)) {
+                    return
+                }
+                switch (this.operation) {
+                    case '+':
+                        computation = pre + cur
+                        break;
+                    case '-':
+                        computation = pre - cur
+                        break;
+                    case '×':
+                        computation = pre * cur
+                        break;
+                    case '÷':
+                        computation = pre / cur
+                        break
+                    
+                    default:
+                        return
+                }
+    
+
+                //把结果赋给当前操作数
+                this.currentNumber = computation
+                //其余都重置，不然结果又会和先前数计算
+                this.operation = undefined
+                this.perviousNumber = ''
+            }
+           
+
+            //渲染页面，每一次计算都要调用
+            render() {
+                //把现在的操作上（结果）赋给结果位置
+                this.result.innerHTML = this.currentNumber
+                //如果我们输入了符号，那么现在位置是上一个操作数和符号的拼接
+                if (this.operation != null) {
+                    this.current.innerHTML = `${this.perviousNumber}${this.operation}`
+                }
+            }
+        }
+        //获取元素
+        const numbers = document.querySelectorAll('.number')
+        const keys = document.querySelectorAll('[data-key]')
+        const current = document.querySelector('.current')
+        const result = document.querySelector('.result')
+
+        const cal = new Cal(current, result)
+
+        //添加数字
+        numbers.forEach(item => {
+            item.addEventListener('click', () => {
+                // console.log(1)
+                cal.add(item.innerHTML)
+                cal.render()
+            })
+        })
+
+        //添加符号
+        keys.forEach(item => {
+            if (item.dataset.key === 'jia' || item.dataset.key === 'jian' || item.dataset.key === 'cheng' || item.dataset.key === 'chu' ) {
+                item.addEventListener('click', () => {
+                    // console.log(1)
+                    // console.log(item.innerHTML)
+                    cal.addKey(item.innerHTML)
+                    cal.render()
+                })
+
+            }
+
+            //计算模块
+            if (item.dataset.key === 'deng') {
+                item.addEventListener('click', () => {
+                    cal.compute()
+                    cal.render()
+                })
+
+            }
+
+            //清空模块
+            if (item.dataset.key === 'clear') {
+                item.addEventListener('click', () => {
+                    cal.clear()
+                    current.innerHTML = ''
+                    result.innerHTML = ''
+                })
+
+            }
+
+            //删除模块
+            if (item.dataset.key === 'back') {
+                item.addEventListener('click', () => {
+                    cal.del()
+                    cal.render()
+                })
+            }
+        })
+    
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="clock">
+        <div class="hand hour"></div>
+        <div class="hand minute"></div>
+        <div class="hand second"></div>
+        <div class="number one">
+            <div class="number1">1</div>
+        </div>
+        <div class="number two">
+            <div class="number1">2</div>
+        </div>
+        <div class="number three">
+            <div class="number1">3</div>
+        </div>
+        <div class="number four">
+            <div class="number1">4</div>
+        </div>
+        <div class="number five">
+            <div class="number1">5</div>
+        </div>
+        <div class="number six">
+            <div class="number1">6</div>
+        </div>
+        <div class="number seven">
+            <div class="number1">7</div>
+        </div>
+        <div class="number eight">
+            <div class="number1">8</div>
+        </div>
+        <div class="number nine">
+            <div class="number1">9</div>
+        </div>
+        <div class="number ten">
+            <div class="number1">10</div>
+        </div>
+        <div class="number eleven">
+            <div class="number1">11</div>
+        </div>
+        <div class="number twelve">
+            <div class="number1">12</div>
+        </div>
+
+    </div>
+    <script>
+        //获取元素
+        const hourhand = document.querySelector('.hour')
+        const minutehand = document.querySelector('.minute')
+        const secondhand = document.querySelector('.second')
+
+        //函数:让指针走动
+        function goHand() {
+            //获取现在的时间
+            const time = new Date()
+            // console.log(time)
+            //获取秒分时
+            const second = time.getSeconds()
+            // console.log(second)
+            const minute = time.getMinutes()
+            const hour = time.getHours()
+            //计算三根指针要走的度数
+            //秒针：每一秒走6°
+            const sedAngle = 6 * second
+            // console.log(sedAngle)
+            //分针：每一分走6°，为了平缓要加入秒针带来的偏移
+            //分针转一圈，要3600s，所有秒针带来的偏移是每一秒转(360/3600)
+            const minAngle = 6 * minute + second * 0.1
+            //时针：每一小时走30°，加上分针的偏移和秒针的偏移
+            //时针转一圈，需要12*60min，所有分针带来的偏移是每一分转(360/(12*60))
+            //需要12*60*60s，所有秒针带来的偏移是每一秒转(360/(12*60*60))
+            const hourAngle = 30 * hour + minute / 2 + second / 120
+
+            secondhand.style.transform = ` rotate(${sedAngle}deg)`
+            minutehand.style.transform = `rotate(${minAngle}deg)`
+            hourhand.style.transform = `rotate(${hourAngle}deg)`
+
+
+
+        }
+        //定时器
+        //每一秒钟,调用一次函数
+        //函数就是让指针走的
+        setInterval(goHand, 1000)
+    </script>
+</body>
+
+</html>
