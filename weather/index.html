@@ -51,17 +51,17 @@
 
 
         searchBtn.addEventListener('click', () => {
-            fn()
+            getWeather()
         })
         searchBox.addEventListener('keyup', (e) => {
             //   console.log(e.key)
-            if (e.key === 'Enter') { fn() }
+            if (e.key === 'Enter') { getWeather() }
 
         })
 
         //调用的获取天气函数
 
-        function fn() {
+        function getWeather() {
             alert('正在查询...')
             //先判断非空
             if (searchBox.value.trim() === '') {
