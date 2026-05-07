@@ -61,7 +61,7 @@ body{
     border: 1px solid #6b25d2;
     color: black;
     background-color: #fff;
-    transition: all .3s ease;
+    transition: all .3s ease;     /*过渡自然*/
 }
 .btn{
     display: flex;

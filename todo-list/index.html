@@ -20,7 +20,7 @@
     <div class="todo-lists">
         <ul>
             <!-- <li class="list fade-away">
-                <div class="item">12323333</div>
+                <div>12323333</div>
                 <div class="btn">
                     <button class="completed">✔️</button>
                     <button class="delete">❌</button>
@@ -31,73 +31,152 @@
     <script>
         const input = document.querySelector('.todo-get')
         const getbtn = document.querySelector('.get-btn')
-
         const ul = document.querySelector('.todo-lists ul')
         //添加事件
         //点击添加清单
-        getbtn.addEventListener('click', addList)
+        getbtn.addEventListener('click', addTodo)
         //点击删除清单，利用事件委托
-        ul.addEventListener('click', deleteList)
+        ul.addEventListener('click', btns)
 
-        //添加模块
-        function addList(e) {
+        //定义所有待办事件
+        let todos = null
+        //获取本地存储数据
+        function getTodos() {
+            const stored = localStorage.getItem('todos')    //取出是JSON字符串
+            todos = stored ? JSON.parse(stored) : []     //有的话就解析，没有就是空数组
+        }
+
+        //保存数据
+        function saveTodos(todos) {
+            localStorage.setItem('todos', JSON.stringify(todos))
+        }
+
+        //页面加载完，渲染每条数据
+        function renderTodos() {
+            //遍历数组，每一个数据都进行渲染
+            todos.forEach(item => {
+                render(item)
+            })
+        }
+        //页面加载完，就获取所有待办事件
+        getTodos()
+        renderTodos()
+
+        //添加数据
+        function addTodo(e) {
             //阻止表单默认行为
             e.preventDefault()
             // console.log(1)
             if (input.value !== '' && input.value.trim() !== '') {
-                // console.log(input.value)
-                //新增list
-                const list = document.createElement('li')
-                //添加样式
-                list.classList.add('list')
-                //新增item
-                const item = document.createElement('div')
-                //将item的文本改变，并追加给list
-                item.innerHTML = input.value
-                list.append(item)
+                // console.log(input.value.trim())
+                //新代办
+                const todo = {
+                    id: Date.now(),
+                    text: input.value.trim(),
+                    completed: false    //新加默认没完成
+                }
+                //追加给原有数据
+                todos.push(todo)
+                //本地保存数据
+                saveTodos(todos)
+                //渲染页面
+                render(todo)
+                //清除输入框
                 input.value = ''
-
-                //新增按钮
-                const div = document.createElement('div')
-                div.classList.add('btn')
-                //添加按钮
-                const completed = document.createElement('button')
-                completed.classList.add('completed')
-                completed.innerHTML = '✔️'
-                //追加给div
-                div.append(completed)
-
-                //删除按钮
-                const del = document.createElement('button')
-                del.classList.add('delete')
-                del.innerHTML = '❌'
-                //追加给div
-                div.append(del)
-
-
-                //div追加给list
-                list.append(div)
-                //将list追加给ul，显示到页面
-                ul.append(list)
-
-            } else { alert('输入内容不为空！') }
-
+            }
+            else {
+                alert('输入内容不为空！')
+            }
         }
+
+        //渲染页面
+        function render(todo) {
+            // console.log('渲染')
+            // console.log(todo)
+            const li = document.createElement('li')
+            li.classList.add('list')
+            //给li添加id
+            li.dataset.id = todo.id
+            const item = document.createElement('div')
+            //  console.log(todo.text)
+            item.innerHTML = todo.text
+            //如果完成了
+            if (todo.completed) {
+                item.classList.add('active')
+            }
+            //item追加给li
+            li.append(item)
+            
+
+            //新增按钮
+            const div = document.createElement('div')
+            div.classList.add('btn')
+
+            //添加按钮
+            const completed = document.createElement('button')
+            completed.classList.add('completed')
+            completed.innerHTML = '✔️'
+            //追加给div
+            div.append(completed)
+
+            //删除按钮
+            const del = document.createElement('button')
+            del.classList.add('delete')
+            del.innerHTML = '❌'
+
+            //追加给div
+            div.append(del)
+            //div追加给li
+            li.append(div)
+
+            //将li追加给ul，显示到页面
+            ul.append(li)
+        }
+
         //完成/删除模块
-        function deleteList(e) {
+        function btns(e) {
             //完成
             // console.log(e.target.classList[0])
             if (e.target.classList[0] === 'completed') {
-                // console.log(e.target.parentElement.previousElementSibling)
-                e.target.parentElement.previousElementSibling.classList.add('active')
-            }
-            if (e.target.classList[0] === 'delete') {
                 // console.log(e.target.closest('li'))
-                e.target.closest('li').classList.add('fade-away')
-                e.target.closest('li').addEventListener('transitionend', () => {
-                    // console.log(1)
-                     e.target.closest('li').remove()
-                })
+                const li = e.target.closest('li')
+                console.log(li.dataset.id)
+                // console.log(todos)
+                //遍历todos，找到id相同的todo
+                const todo = todos.find(item => item.id === Number(li.dataset.id))
+                //  console.log(todo)
+                if (todo) {
+                    //改变他的完成状态
+                    todo.completed = !todo.completed
+                    //保存数据
+                    saveTodos(todos)
+                    //更改样式
+                    li.querySelector('div:nth-child(1)').classList.toggle('active')
+                }
+            }
+            //删除
+            if (e.target.classList[0] === 'delete') {
+                const li = e.target.closest('li')
+                // console.log(li)
+                const id = li.dataset.id
+                // console.log(id)
+                const todo = todos.find(item => item.id === Number(id))
+                // console.log(todo)
+                if (todo) {
+                    //增加样式
+                    li.classList.add('fade-away')
+                    //从页面删除
+                    li.addEventListener('transitionend',()=>{    //动画结束后，从页面消失
+                        li.remove()
+                    })
+                   //过滤数据
+                   const finalTodos=todos.filter(item=>item.id!==Number(id))
+                   //将旧数组更新，不然每次都是从todos里找，删除了，id再也匹配不到，删除不起作用
+                   todos=finalTodos
+                   console.log(todos)
+                   //重新存储
+                   saveTodos(todos)
+                }
             }
         }
     </script>
